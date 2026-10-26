@@ -1,0 +1,563 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Far North Queensland Wildlife: a mini photo guide</title>
+<meta name="description" content="A mini photo guide to the wildlife of Far North Queensland, Australia: birds, mammals, reptiles, insects and reef fish, photographed in their natural habitat by Shoshana Coleman.">
+<meta name="theme-color" content="#001d14">
+<link rel="preload" as="image" href="images/fnq/pages/page-01.webp" fetchpriority="high">
+<style>
+  :root {
+    --zine: #002b1e;      /* the zine's own page green */
+    --night: #00150e;     /* page background, a step darker so the pages read as objects */
+    --bar: #001d14;
+    --ink: #e9efe8;
+    --muted: #93ad9f;
+    --accent: #a9d4bd;
+    --bar-h: 3.5rem;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--night); -webkit-text-size-adjust: 100%; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+  body { margin: 0; min-height: 100vh; background: var(--night); color: var(--ink);
+         font: 1rem/1.5 Georgia, "Iowan Old Style", "Palatino Linotype", serif; }
+  body:has(dialog[open]) { overflow: hidden; }
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden;
+             clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0; }
+  .skip { position: absolute; left: .75rem; top: -4rem; z-index: 20; padding: .5rem .75rem;
+          background: var(--ink); color: var(--zine); border-radius: 2px; }
+  .skip:focus { top: .75rem; }
+
+  /* top bar */
+  .bar { position: sticky; top: 0; z-index: 10; display: grid; align-items: center;
+         grid-template-columns: auto minmax(0, 1fr) auto; gap: .25rem 1.75rem; min-height: var(--bar-h);
+         padding: .4rem max(1rem, env(safe-area-inset-right)) .4rem max(1rem, env(safe-area-inset-left));
+         background: var(--bar); border-bottom: 1px solid rgba(233, 239, 232, .09); }
+  .title { font-size: 1.05rem; letter-spacing: .01em; text-decoration: none; white-space: nowrap; }
+  .nav { position: relative; overflow-x: auto; scrollbar-width: none; }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav ul { display: flex; gap: 1.5rem; margin: 0; padding: 0; list-style: none; white-space: nowrap; }
+  .nav a { display: inline-block; padding: .5rem 0; color: var(--muted); font-size: .9rem; text-decoration: none; }
+  .nav a:hover { color: var(--ink); }
+  .nav a[aria-current] { color: var(--ink); text-decoration: underline; text-decoration-color: var(--accent);
+                         text-decoration-thickness: 2px; text-underline-offset: .4em; }
+  .meta { display: flex; align-items: baseline; gap: 1.25rem; color: var(--muted); font-size: .875rem; white-space: nowrap; }
+  .count { font-variant-numeric: tabular-nums; }
+  .meta a { color: var(--ink); text-decoration-color: rgba(233, 239, 232, .4); text-underline-offset: .25em; }
+  .meta a:hover { text-decoration-color: var(--accent); }
+
+  /* pages: each one sized to fit the screen, like turning a page */
+  main { padding: 1.25rem 1rem 1rem; }
+  .pg { margin: 0 auto 1.25rem; scroll-margin-top: calc(var(--bar-h) + .75rem);
+        width: min(100%, max(20rem, calc((100vh - var(--bar-h) - 2.5rem) * .75)), 880px); }
+  @supports (height: 100svh) {
+    .pg { width: min(100%, max(20rem, calc((100svh - var(--bar-h) - 2.5rem) * .75)), 880px); }
+  }
+  .pg a { display: block; aspect-ratio: 3 / 4; overflow: hidden; border-radius: 2px;
+          background: var(--zine); cursor: zoom-in; }
+  .pg img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .pg a:focus-visible { outline-offset: 5px; }
+
+  footer { padding: 2rem 1rem 3.5rem; text-align: center; color: var(--muted); font-size: .9rem; }
+  footer p { margin: .3rem 0; }
+
+  /* enlarged view */
+  #viewer { width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; padding: 0; border: 0;
+            background: #000c08; color: var(--ink); }
+  #viewer[open] { display: flex; flex-direction: column; }
+  #viewer::backdrop { background: #000c08; }
+  .stage { flex: 1; min-height: 0; display: flex; padding: .75rem; overflow: auto; overscroll-behavior: contain; }
+  .stage img { display: block; margin: auto; width: auto; height: auto; background: var(--zine); cursor: zoom-in;
+               max-width: 100%; max-height: calc(100vh - 5.25rem); }
+  @supports (height: 100dvh) { .stage img { max-height: calc(100dvh - 5.25rem); } }
+  .stage.zoomed img { max-width: none; max-height: none; width: 1800px; cursor: zoom-out; }
+  .vbar { flex: none; display: flex; align-items: center; justify-content: center; gap: 1.25rem;
+          height: calc(3.75rem + env(safe-area-inset-bottom)); padding-bottom: env(safe-area-inset-bottom); }
+  .vinfo { min-width: 12rem; text-align: center; line-height: 1.3; }
+  .vlabel { display: block; font-size: .95rem; }
+  .vhint { display: block; color: var(--muted); font-size: .75rem; }
+  .vbtn { display: grid; place-items: center; width: 2.75rem; height: 2.75rem; padding: 0; cursor: pointer;
+          color: var(--ink); background: transparent; border: 1px solid rgba(233, 239, 232, .28); border-radius: 50%; }
+  .vbtn:hover:not(:disabled) { background: rgba(233, 239, 232, .12); }
+  .vbtn:disabled { opacity: .3; cursor: default; }
+  .vclose { position: absolute; top: max(.75rem, env(safe-area-inset-top)); right: max(.75rem, env(safe-area-inset-right));
+            background: rgba(0, 21, 14, .9); }
+
+  @media (max-width: 720px) {
+    :root { --bar-h: 5.25rem; }
+    .bar { grid-template-columns: minmax(0, 1fr) auto; gap: 0 1rem; }
+    .nav { grid-column: 1 / -1; order: 3; margin-inline: -1rem; padding-inline: 1rem; }
+    .count, .size { display: none; }
+    main { padding-inline: .75rem; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#guide">Skip to the pages</a>
+
+<header class="bar">
+  <a class="title" href="#p1">Far North Queensland Wildlife</a>
+  <nav class="nav" aria-label="Sections">
+    <ul>
+      <li><a href="projects.html">&larr; Projects</a></li>
+      <li><a href="#p4"  data-from="4"  data-to="24">Birds</a></li>
+      <li><a href="#p25" data-from="25" data-to="37">Mammals</a></li>
+      <li><a href="#p38" data-from="38" data-to="45">Reptiles &amp; Insects</a></li>
+      <li><a href="#p46" data-from="46" data-to="55">Fish</a></li>
+      <li><a href="#p56" data-from="56" data-to="56">References</a></li>
+    </ul>
+  </nav>
+  <div class="meta">
+    <span class="count" id="count" aria-hidden="true">1 / 56</span>
+  </div>
+</header>
+
+<main id="guide" tabindex="-1">
+  <figure class="pg" id="p1" data-n="1">
+    <a href="images/fnq/pages-large/page-01.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-01.webp" width="1400" height="1867" alt="Page 1: Cover: Far North Queensland Wildlife, a mini photo guide, with a cassowary and its chick walking along a road" decoding="async" fetchpriority="high">
+    </a>
+    <figcaption class="sr-only">Far North Queensland Wildlife: a mini photo guide. Shoshana Coleman.</figcaption>
+  </figure>
+  <figure class="pg" id="p2" data-n="2">
+    <a href="images/fnq/pages-large/page-02.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-02.webp" width="1400" height="1867" alt="Page 2: Artist statement" decoding="async" >
+    </a>
+    <figcaption class="sr-only">Artist Statement I set out to photograph as many species as possible in their natural habitat in Australia’s Far North Queensland’s area. I focused on endangered and threatened species but captured photos of other species as well as in today’s world almost every animal species on earth can be expected to experience significant population decline in the near future. My main purpose of this project is to promote environmental conservation and foster a greater sense of empathy toward the animal species. I would like to educate people on the animals in the region and encourage others to care for the natural world. Although I have done extensive research on the identification and the facts on the animals and have done my best to insure everything is accurate, there may be some mistakes. There were a couple species that I was not able to identify. -Shoshana Coleman</figcaption>
+  </figure>
+  <figure class="pg" id="p3" data-n="3">
+    <a href="images/fnq/pages-large/page-03.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-03.webp" width="1400" height="1867" alt="Page 3: Map of Far North Queensland with the wildlife guide locations" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">Far North Queensland Map</figcaption>
+  </figure>
+  <figure class="pg" id="p4" data-n="4">
+    <a href="images/fnq/pages-large/page-04.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-04.webp" width="1400" height="1867" alt="Page 4: Section: Birds" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">Birds</figcaption>
+  </figure>
+  <figure class="pg" id="p5" data-n="5">
+    <a href="images/fnq/pages-large/page-05.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-05.webp" width="1400" height="1867" alt="Page 5: Black butcherbird" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">Black butcherbird Cattana Wetlands, Smithfield Conservation Status: Least Concern • They get their name because they will impale their prey on broken branches, thorns, or tree forks • Their diet includes insects, lizards, small mammals and birds, as well as some fruits • They are considered to have an extremely musical birdsong</figcaption>
+  </figure>
+  <figure class="pg" id="p6" data-n="6">
+    <a href="images/fnq/pages-large/page-06.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-06.webp" width="1400" height="1867" alt="Page 6: Laughing kookaburra" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">Laughing kookaburra Conservation Status: Least Concern • Largest members of the Kingfisher family • They get their name from the loud territorial sound they make that sounds like a laugh • There are two species of Kookaburra native to Australia, the Laughing Kookaburra and the Blue-Winged Kookaburra Magnetic Island, Townsville</figcaption>
+  </figure>
+  <figure class="pg" id="p7" data-n="7">
+    <a href="images/fnq/pages-large/page-07.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-07.webp" width="1400" height="1867" alt="Page 7: Orange-footed scrubfowl" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">Orange-footed scrubfowl Conservation Status: Least Concern • Their diet includes small arthropods and some fallen fruit • They build large mounds with organic matter generate heat by the composting process and incubate eggs Cattana Wetlands, Smithfield • They are able to fly short distances and roost in trees at night</figcaption>
+  </figure>
+  <figure class="pg" id="p8" data-n="8">
+    <a href="images/fnq/pages-large/page-08.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-08.webp" width="1400" height="1867" alt="Page 8: Rainbow lorikeet" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">Port Douglas Rainbow lorikeet Conservation Status: Least Concern • The pet trade and habitat loss are contributing to their population decline</figcaption>
+  </figure>
+  <figure class="pg" id="p9" data-n="9">
+    <a href="images/fnq/pages-large/page-09.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-09.webp" width="1400" height="1867" alt="Page 9: Rainbow lorikeet, continued" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">They have a specially designed tongue with its tip similar to a paintbrush. This allows them to feed on on pollen, nectar and fruits • They often travel together in pairs are monogamous Magnetic Island, Townsville</figcaption>
+  </figure>
+  <figure class="pg" id="p10" data-n="10">
+    <a href="images/fnq/pages-large/page-10.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-10.webp" width="1400" height="1867" alt="Page 10: Leaden flycatcher" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">Leaden flycatcher Conservation Status: Least Concern • Found mainly in coastal areas Cattana Wetlands, Smithfield • Very similar to the Broad-billed Flycatcher, and the Satin Flycatcher • Feeds on insects</figcaption>
+  </figure>
+  <figure class="pg" id="p11" data-n="11">
+    <a href="images/fnq/pages-large/page-11.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-11.webp" width="1400" height="1867" alt="Page 11: Azure kingfisher" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">Azure kingfisher Daintree River Conservation Status: Least Concern • Found Across Northern and Eastern Australia as as in parts of Indonesia, New Guinea, and surrounding islands • They mainly eat fish, crustaceans, aquatic insects, other invertebrates, and sometimes frogs • Transparent membranes protect their eyes when they dive</figcaption>
+  </figure>
+  <figure class="pg" id="p12" data-n="12">
+    <a href="images/fnq/pages-large/page-12.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-12.webp" width="1400" height="1867" alt="Page 12: Bush stone-curlew" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">Although they are common in many parts of QLD, in NSW they are listed as Endangered and in VIC, Threatened. Also called Bush Thick-knee They are known for their loud contact call that sound like screams Bush-stone curlew Conservation Status: Least Concern Magnetic Island, Townsville</figcaption>
+  </figure>
+  <figure class="pg" id="p13" data-n="13">
+    <a href="images/fnq/pages-large/page-13.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-13.webp" width="1400" height="1867" alt="Page 13: Olive-backed sunbird" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">They often occupy the edges of forest and mangroves • Primarily eat nectar and sometimes insects • When chicks are hatched, the female primarily cares for them Olive-backed sunbird Conservation Status: Least Concern Daintree Rainforest</figcaption>
+  </figure>
+  <figure class="pg" id="p14" data-n="14">
+    <a href="images/fnq/pages-large/page-14.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-14.webp" width="1400" height="1867" alt="Page 14: Torresian imperial pigeon" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">Port Douglas Torresian imperial pigeon Conservation Status: Least Concern • They were subject to • Also called the nutmeg mass killing in the 19th pigeon, white nutmeg and 20th centuries before pigeon, Australian pied campaigns by imperial pigeon or Torres conservation activists Strait pigeon • They eat mostly fruits</figcaption>
+  </figure>
+  <figure class="pg" id="p15" data-n="15">
+    <a href="images/fnq/pages-large/page-15.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-15.webp" width="1400" height="1867" alt="Page 15: Green oriole" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">Madja Boardwalk, Cape Tribulation Green oriole Conservation Status: Least Concern • Also called Australian yellow oriole, yellow oriole and yellowbellied oriole • Typically lay two eggs • Usually seen alone or in pairs</figcaption>
+  </figure>
+  <figure class="pg" id="p16" data-n="16">
+    <a href="images/fnq/pages-large/page-16.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-16.webp" width="1400" height="1867" alt="Page 16: Comb-crested jacana" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">Comb-crested jacana Conservation Status: Least Concern • They eat aquatic insects, seeds, and plants • Males build the nest, incubate eggs and care for chicks • They rarely come to shore Cattana Wetlands, Smithfield</figcaption>
+  </figure>
+  <figure class="pg" id="p17" data-n="17">
+    <a href="images/fnq/pages-large/page-17.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-17.webp" width="1400" height="1867" alt="Page 17: Helmeted friarbird" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">Their main sources of food are nectar, fruits, and seeds • Their lifespan is about five – seven years • It is estimated that their population will decline by 10% in the next 10 years Helmeted friarbird Conservation Status: Least Concern Daintree Rainforest</figcaption>
+  </figure>
+  <figure class="pg" id="p18" data-n="18">
+    <a href="images/fnq/pages-large/page-18.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-18.webp" width="1400" height="1867" alt="Page 18: Australasian figbird" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">Port Douglas Australasian figbird Conservation Status: Least Concern</figcaption>
+  </figure>
+  <figure class="pg" id="p19" data-n="19">
+    <a href="images/fnq/pages-large/page-19.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-19.webp" width="1400" height="1867" alt="Page 19: Australasian figbird, continued" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">Also called the Green figbird or Timor figbird • Predominantly feeds on figs and other fruits • Males are brightly colored while females are dull colored Port Douglas</figcaption>
+  </figure>
+  <figure class="pg" id="p20" data-n="20">
+    <a href="images/fnq/pages-large/page-20.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-20.webp" width="1400" height="1867" alt="Page 20: Southern cassowary" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">Southern Cassowary Conservation Status: Endangered Etty Bay</figcaption>
+  </figure>
+  <figure class="pg" id="p21" data-n="21">
+    <a href="images/fnq/pages-large/page-21.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-21.webp" width="1400" height="1867" alt="Page 21: Southern cassowary, continued" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">Although the IUCN Red list considers the Southern Cassowary • conservation status to be Least Concern, the Queensland and Australian Government consider them to be Endangered. They are threatened by vehicle traffic, dog attacks and habitat loss</figcaption>
+  </figure>
+  <figure class="pg" id="p22" data-n="22">
+    <a href="images/fnq/pages-large/page-22.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-22.webp" width="1400" height="1867" alt="Page 22: Southern cassowary, continued" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">Male Cassowaries incubate and care for eggs and offspring on their own • Their diet • includes fallen fruit, frogs, snails, fungi, and plants They are the only animal that is capable of dispersing large seeds through the rainforest and are critical for its survival</figcaption>
+  </figure>
+  <figure class="pg" id="p23" data-n="23">
+    <a href="images/fnq/pages-large/page-23.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-23.webp" width="1400" height="1867" alt="Page 23: Southern cassowary, continued" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">They are direct descendants of dinosaurs • Although they can be dangerous • and have killed people, they are not considered aggressive and only attacked when threatened They hold cultural significance to Indigenous Australian people</figcaption>
+  </figure>
+  <figure class="pg" id="p24" data-n="24">
+    <a href="images/fnq/pages-large/page-24.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-24.webp" width="1400" height="1867" alt="Page 24: Southern cassowary, continued" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">There are estimated to be only 4,000 wild Cassowaries left in Australia</figcaption>
+  </figure>
+  <figure class="pg" id="p25" data-n="25">
+    <a href="images/fnq/pages-large/page-25.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-25.webp" width="1400" height="1867" alt="Page 25: Section: Mammals" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">Mammals</figcaption>
+  </figure>
+  <figure class="pg" id="p26" data-n="26">
+    <a href="images/fnq/pages-large/page-26.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-26.webp" width="1400" height="1867" alt="Page 26: Mareeba rock-wallaby" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">Mareeba rock-wallaby Conservation Status: Near Threatened • Although they are rare and listed as a nearthreatened species under IUCN classification, they are considered “Least concern” under Queensland&#x27;s Nature Conservation Act 1992 • They are threatened by agriculture, invasive species and diseases, and bushfires • Only found in the highlands west of Cairns Granite Gorge Nature Park</figcaption>
+  </figure>
+  <figure class="pg" id="p27" data-n="27">
+    <a href="images/fnq/pages-large/page-27.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-27.webp" width="1400" height="1867" alt="Page 27: Allied rock-wallaby" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">Magnetic Island, Townsville Allied rock- wallaby Conservation Status: Least Concern</figcaption>
+  </figure>
+  <figure class="pg" id="p28" data-n="28">
+    <a href="images/fnq/pages-large/page-28.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-28.webp" width="1400" height="1867" alt="Page 28: Allied rock-wallaby, continued" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">Gestation period is about 30 days and the joey leaves the pouch at 6-7 months old While looking for food, joey that are old enough are often left hidden in rock crevices Species of rock-wallaby found in northeastern QLD</figcaption>
+  </figure>
+  <figure class="pg" id="p29" data-n="29">
+    <a href="images/fnq/pages-large/page-29.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-29.webp" width="1400" height="1867" alt="Page 29: Northern koala" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">Northern Koala Conservation Status: Endangered Magnetic Island, Townsville</figcaption>
+  </figure>
+  <figure class="pg" id="p30" data-n="30">
+    <a href="images/fnq/pages-large/page-30.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-30.webp" width="1400" height="1867" alt="Page 30: Northern koala, continued" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">Koalas can sleep up to 20 hours a day • Their population is declining and they are threatened largely due to habitat loss • Northern Koalas are smaller and lighter in color compared to Southern Koalas</figcaption>
+  </figure>
+  <figure class="pg" id="p31" data-n="31">
+    <a href="images/fnq/pages-large/page-31.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-31.webp" width="1400" height="1867" alt="Page 31: Northern koala, continued" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">They feed mostly on eucalyptus leaves which are toxic to most other animals and humans</figcaption>
+  </figure>
+  <figure class="pg" id="p32" data-n="32">
+    <a href="images/fnq/pages-large/page-32.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-32.webp" width="1400" height="1867" alt="Page 32: Platypus" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">Yungaburra Platypus Conservation Status: Near Threatened</figcaption>
+  </figure>
+  <figure class="pg" id="p33" data-n="33">
+    <a href="images/fnq/pages-large/page-33.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-33.webp" width="1400" height="1867" alt="Page 33: Platypus, continued" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">They are largely solitary animals, but more than one platypus can share bodies of water</figcaption>
+  </figure>
+  <figure class="pg" id="p34" data-n="34">
+    <a href="images/fnq/pages-large/page-34.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-34.webp" width="1400" height="1867" alt="Page 34: Platypus, continued" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">They are one of five mammals that lay eggs ISO: 1250 Shutter Speed: 1/400 F-stop: 6.3 • Male platypus are venomous and have spurs on their legs that connect to a venomous gland</figcaption>
+  </figure>
+  <figure class="pg" id="p35" data-n="35">
+    <a href="images/fnq/pages-large/page-35.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-35.webp" width="1400" height="1867" alt="Page 35: Spectacled flying-fox" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">Conservation Status: Endangered Yungaburra Spectacled Flying- Fox</figcaption>
+  </figure>
+  <figure class="pg" id="p36" data-n="36">
+    <a href="images/fnq/pages-large/page-36.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-36.webp" width="1400" height="1867" alt="Page 36: Spectacled flying-fox, continued" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">They are the largest pollinators of the rainforest and eucalypt forests • They are considered keystone species, crucial to the survival of their ecosystem • Very social animals and live in colonies of hundreds and sometimes thousands • Pups will remain attached to the mother for 5-6 weeks until they become too heavy to carry while flying. They will then be left in the tree while the mother feeds</figcaption>
+  </figure>
+  <figure class="pg" id="p37" data-n="37">
+    <a href="images/fnq/pages-large/page-37.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-37.webp" width="1400" height="1867" alt="Page 37: Spectacled flying-fox, continued" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">They can fly at a top speed of 50km per hour</figcaption>
+  </figure>
+  <figure class="pg" id="p38" data-n="38">
+    <a href="images/fnq/pages-large/page-38.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-38.webp" width="1400" height="1867" alt="Page 38: Section: Reptiles and insects" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">Reptiles &amp; Insects</figcaption>
+  </figure>
+  <figure class="pg" id="p39" data-n="39">
+    <a href="images/fnq/pages-large/page-39.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-39.webp" width="1400" height="1867" alt="Page 39: Freshwater snake" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">Yungabarra • Also known as the Keelback Snake • They are nonvenomous • One of the few snakes that can eat cane toads Freshwater Snake Conservation Status: Least Concern</figcaption>
+  </figure>
+  <figure class="pg" id="p40" data-n="40">
+    <a href="images/fnq/pages-large/page-40.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-40.webp" width="1400" height="1867" alt="Page 40: Northern red-throated rainbow-skink" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">Daintree Rainforest Northern Red-throated Rainbow-Skink Conservation Status: Least Concern • They are endemic to Queensland • Males have a red colored throat while females have pale pink • Throat coloration increases in males during breeding season</figcaption>
+  </figure>
+  <figure class="pg" id="p41" data-n="41">
+    <a href="images/fnq/pages-large/page-41.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-41.webp" width="1400" height="1867" alt="Page 41: Saw-shelled turtle" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">Primarily carnivoro us: feeds on fish, tadpoles, and frogs, and aquatic insects Saw-Shelled Turtle Conservation Status: Least Concern Yungaburra • One of the few animals able to eat poisonous cane toads, an invasive species in Australia • Females grow significantly larger than males</figcaption>
+  </figure>
+  <figure class="pg" id="p42" data-n="42">
+    <a href="images/fnq/pages-large/page-42.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-42.webp" width="1400" height="1867" alt="Page 42: Saltwater crocodile" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">Saltwater Crocodile Conservation Status: Least Concern • Largest reptile in the world • Can hold their breath for up to 7 hours • Larger crocodiles can go for over a year without eating Daintree River</figcaption>
+  </figure>
+  <figure class="pg" id="p43" data-n="43">
+    <a href="images/fnq/pages-large/page-43.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-43.webp" width="1400" height="1867" alt="Page 43: Green sea turtle" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">Green sea turtle Conservation Status: Endangered Great Barrier Reef</figcaption>
+  </figure>
+  <figure class="pg" id="p44" data-n="44">
+    <a href="images/fnq/pages-large/page-44.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-44.webp" width="1400" height="1867" alt="Page 44: Green sea turtle, continued" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">They are named for the color of their green colored fat, likely resulting from their herbivore diet • Can live up to 80 years in the wild • Their greatest threats are the commercial harvest for eggs and food, fisheries bycatch, coastal development, pollution and pathogens, direct take, and climate change.</figcaption>
+  </figure>
+  <figure class="pg" id="p45" data-n="45">
+    <a href="images/fnq/pages-large/page-45.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-45.webp" width="1400" height="1867" alt="Page 45: Cairns birdwing butterfly" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">Daintree Rainforest • Males are smaller and more colorful than females • Largest of all Australian Butterflies • Their wingspan can reach up to 15cm Cairns birdwing butterfly Conservation Status: Least Concern</figcaption>
+  </figure>
+  <figure class="pg" id="p46" data-n="46">
+    <a href="images/fnq/pages-large/page-46.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-46.webp" width="1400" height="1867" alt="Page 46: Section: Fish" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">Fish</figcaption>
+  </figure>
+  <figure class="pg" id="p47" data-n="47">
+    <a href="images/fnq/pages-large/page-47.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-47.webp" width="1400" height="1867" alt="Page 47: Parrotfish" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">Parrotfish</figcaption>
+  </figure>
+  <figure class="pg" id="p48" data-n="48">
+    <a href="images/fnq/pages-large/page-48.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-48.webp" width="1400" height="1867" alt="Page 48: Striped surgeonfish" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">Striped surgeonfish</figcaption>
+  </figure>
+  <figure class="pg" id="p49" data-n="49">
+    <a href="images/fnq/pages-large/page-49.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-49.webp" width="1400" height="1867" alt="Page 49: Striped fish swimming over coral, Great Barrier Reef" decoding="async" loading="lazy">
+    </a>
+  </figure>
+  <figure class="pg" id="p50" data-n="50">
+    <a href="images/fnq/pages-large/page-50.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-50.webp" width="1400" height="1867" alt="Page 50: Blue-spotted spinefoot" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">Blue-spotted spinefoot</figcaption>
+  </figure>
+  <figure class="pg" id="p51" data-n="51">
+    <a href="images/fnq/pages-large/page-51.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-51.webp" width="1400" height="1867" alt="Page 51: Scissortail sergeant" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">Scissortail sergeant</figcaption>
+  </figure>
+  <figure class="pg" id="p52" data-n="52">
+    <a href="images/fnq/pages-large/page-52.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-52.webp" width="1400" height="1867" alt="Page 52: Wrasse fish" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">Wrasse Fish</figcaption>
+  </figure>
+  <figure class="pg" id="p53" data-n="53">
+    <a href="images/fnq/pages-large/page-53.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-53.webp" width="1400" height="1867" alt="Page 53: Green and blue reef fish beside yellow coral, Great Barrier Reef" decoding="async" loading="lazy">
+    </a>
+  </figure>
+  <figure class="pg" id="p54" data-n="54">
+    <a href="images/fnq/pages-large/page-54.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-54.webp" width="1400" height="1867" alt="Page 54: Unidentified fish" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">(Unknown)</figcaption>
+  </figure>
+  <figure class="pg" id="p55" data-n="55">
+    <a href="images/fnq/pages-large/page-55.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-55.webp" width="1400" height="1867" alt="Page 55: Unidentified fish, continued" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">(Unknown)</figcaption>
+  </figure>
+  <figure class="pg" id="p56" data-n="56">
+    <a href="images/fnq/pages-large/page-56.webp" title="Open larger view">
+      <img src="images/fnq/pages/page-56.webp" width="1400" height="1867" alt="Page 56: References" decoding="async" loading="lazy">
+    </a>
+    <figcaption class="sr-only">References 8 interesting platypus facts. WWF. Retrieved from https://www.wwf.org.au/news/blogs/8-interesting-platypus-facts An Illustrated Guide to Australia&#x27;s Kingfishers. Australian Geographic. (2021, September 27). Retrieved from https://www.australiangeographic.com.au/topics/wildlife/2016/11/australias-fabulou)s-kingfishers/ Bush stone-curlew. NSW Environment and Heritage. (2018, July 25). Retrieved from https://www.environment.nsw.gov.au/topics/animals-and-plants/native-animals/native-animal-facts/woodlandbirds/bush-stone-curlew Butcherbird. Backyard Buddies. (2021, February 3). Retrieved from https://backyardbuddies.org.au/backyardbuddies/pied-butcherbird Comb-crested jacana. Birdlife Australia. Retrieved from https://www.birdlife.org.au/bird-profile/comb-crested-jacana Freshwater snake (keelback snake). Museum of Tropical Queensland. Retrieved from https://mtq.qm.qld.gov.au/Explore/Find+out+about/Animals+of+Queensland/Reptiles/Snakes/Common+and+dan gerous+species/Freshwater+Snake+Keelback+Snake Green Sea Turtle Information. Sea Turtle Conservancy. Retrieved from conserveturtles.org/information- sea-turtlesgreen-sea-turtle/ Koala facts. Environment. (2022, March 24). Retrieved from https://environment.des.qld.gov.au/wildlife/animals/livingwith/koalas/facts Laughing kookaburra. SeaWorld Parks &amp; Entertainment. Retrieved from https://seaworld.org/animals/facts/birds/laughing-kookaburra/ Olive-backed sunbird. Birdlife Australia. (n.d.). Retrieved from https://www.birdlife.org.au/bird-profile/olive-backedsunbird Pteropus conspicillatus - spectacled flying-fox. Pteropus conspicillatus - Spectacled Flying-fox. Retrieved from http://www.environment.gov.au/cgi-bin/sprat/public/publicspecies.pl?taxon_id=185 Rainbow lorikeet. Birdlife Australia. Retrieved from https://www.birdlife.org.au/bird-profile/rainbow-lorikeet Region Map of Far North Queensland. Cairns Charts. Retrieved from https://www.cairnscharts.com.au/blogs/news/region-map-of-far-north-queensland Saltwater Crocodile. Australia Zoo. Retrieved from https://www.australiazoo.com.au/wildlife/our-animals/saltwatercrocodile/ Saw-shelled turtle. Sustainability. Retrieved November 8, 2022, from https://sustainability.uq.edu.au/saw-shelled-turtle Southern cassowary. Queensland Government. (2020, November 11). Retrieved from https://www.qld.gov.au/environment/plants-animals/conservation/threatened-wildlife/threatened-species/featuredprojects/southern-cassowary Wet Tropics Management. Cassowaries. Wet Tropics Management Authority. Retrieved from https://www.wettropics.gov.au/cassowaries Wikimedia Foundation. (2021, November 12). Mareeba rock-wallaby. Wikipedia. Retrieved from https://en.wikipedia.org/wiki/Mareeba_rock-wallaby Wikimedia Foundation. (2022, February 17). Carlia rubrigularis. Wikipedia. Retrieved from https://en.wikipedia.org/wiki/Carlia_rubrigularis Wikimedia Foundation. (2022, January 29). Ornithoptera euphorion. Wikipedia. Retrieved from https://en.wikipedia.org/wiki/Ornithoptera_euphorion Wikimedia Foundation. (2022, March 22). Torresian Imperial Pigeon. Wikipedia. Retrieved from https://en.wikipedia.org/wiki/Torresian_imperial_pigeon Wikimedia Foundation. (2022, March 29). Green Oriole. Wikipedia. Retrieved from https://en.wikipedia.org/wiki/Green_oriole Wikimedia Foundation. (2022, October 26). Helmeted friarbird. Wikipedia. Retrieved from https://en.wikipedia.org/wiki/Helmeted_friarbird Wikimedia Foundation. (2022, September 25). Australasian figbird. Wikipedia. Retrieved from https://en.wikipedia.org/wiki/Australasian_figbird Wikimedia Foundation. Allied rock-wallaby. Wikipedia. Retrieved from https://en.wikipedia.org/wiki/Allied_rockwallaby Wildlife profile - orange-footed scrubfowl (Megapodius Reinwardt). Wildlife Profile - Orange-footed Scrubfowl, Darwin and Top End, Australia. Retrieved from https://www.experiencethewild.com.au/?p=Wildlife-Orange-footedScrubfowl</figcaption>
+  </figure>
+</main>
+
+<footer>
+  <p>Photographs and words by Shoshana Coleman.</p>
+  <p><a href="#p1">Back to the cover</a></p>
+  <p><a href="projects.html">&larr; Back to Projects</a></p>
+</footer>
+
+<dialog id="viewer" aria-label="Enlarged page">
+  <button class="vbtn vclose" type="button" data-close aria-label="Close enlarged view">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+  <div class="stage"><img alt=""></div>
+  <div class="vbar">
+    <button class="vbtn" type="button" data-prev aria-label="Previous page">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 6l-6 6 6 6"/></svg>
+    </button>
+    <div class="vinfo">
+      <span class="vlabel" aria-live="polite">Page 1 of 56</span>
+      <span class="vhint">Tap or click the page to zoom in</span>
+    </div>
+    <button class="vbtn" type="button" data-next aria-label="Next page">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 6l6 6-6 6"/></svg>
+    </button>
+  </div>
+</dialog>
+
+<script>
+(function () {
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.pg'));
+  var total = pages.length;
+
+  /* keep the page counter and the current section in the top bar up to date */
+  var countEl = document.getElementById('count');
+  var nav = document.querySelector('.nav');
+  var links = Array.prototype.slice.call(nav.querySelectorAll('a'));
+  var lastSection = -2;
+  function setCurrent(n) {
+    if (countEl) countEl.textContent = n + ' / ' + total;
+    var s = -1;
+    links.forEach(function (l, i) { if (n >= +l.dataset.from && n <= +l.dataset.to) s = i; });
+    if (s === lastSection) return;
+    lastSection = s;
+    links.forEach(function (l, i) { i === s ? l.setAttribute('aria-current', 'true') : l.removeAttribute('aria-current'); });
+    if (s > -1) nav.scrollTo({ left: Math.max(0, links[s].offsetLeft - 16) });
+  }
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) setCurrent(+e.target.dataset.n); });
+    }, { rootMargin: '-45% 0px -45% 0px' });
+    pages.forEach(function (p) { io.observe(p); });
+  }
+
+  /* enlarged view: without <dialog> support, each page simply links to its large image */
+  var dlg = document.getElementById('viewer');
+  if (!dlg || typeof dlg.showModal !== 'function') return;
+  var stage = dlg.querySelector('.stage'), big = stage.querySelector('img');
+  var label = dlg.querySelector('.vlabel'), hint = dlg.querySelector('.vhint');
+  var prev = dlg.querySelector('[data-prev]'), next = dlg.querySelector('[data-next]');
+  var cur = 0;
+
+  function zoom(on, ev) {
+    if (on === stage.classList.contains('zoomed')) return;
+    var fx = .5, fy = .5;
+    if (ev) { var r = big.getBoundingClientRect(); fx = (ev.clientX - r.left) / r.width; fy = (ev.clientY - r.top) / r.height; }
+    stage.classList.toggle('zoomed', on);
+    if (on) {
+      stage.scrollLeft = fx * big.offsetWidth - stage.clientWidth / 2;
+      stage.scrollTop = fy * big.offsetHeight - stage.clientHeight / 2;
+    } else { stage.scrollTo(0, 0); }
+    hint.textContent = on ? 'Tap or click the page to zoom out' : 'Tap or click the page to zoom in';
+  }
+  function show(i) {
+    cur = Math.min(total - 1, Math.max(0, i));
+    var a = pages[cur].querySelector('a');
+    zoom(false);
+    big.src = a.href;
+    big.alt = pages[cur].querySelector('img').alt;
+    label.textContent = 'Page ' + (cur + 1) + ' of ' + total;
+    prev.disabled = cur === 0;
+    next.disabled = cur === total - 1;
+    stage.scrollTo(0, 0);
+    [cur - 1, cur + 1].forEach(function (j) { if (pages[j]) new Image().src = pages[j].querySelector('a').href; });
+  }
+  pages.forEach(function (p, i) {
+    p.querySelector('a').addEventListener('click', function (e) {
+      if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || e.button !== 0) return;
+      e.preventDefault();
+      show(i);
+      dlg.showModal();
+    });
+  });
+  prev.addEventListener('click', function () { show(cur - 1); });
+  next.addEventListener('click', function () { show(cur + 1); });
+  dlg.querySelector('[data-close]').addEventListener('click', function () { dlg.close(); });
+  stage.addEventListener('click', function (e) {
+    if (e.target === big) zoom(!stage.classList.contains('zoomed'), e); else dlg.close();
+  });
+  dlg.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowLeft') show(cur - 1);
+    else if (e.key === 'ArrowRight') show(cur + 1);
+  });
+  dlg.addEventListener('close', function () {
+    pages[cur].querySelector('a').focus({ preventScroll: true });
+    pages[cur].scrollIntoView({ block: 'nearest', behavior: 'instant' });
+  });
+})();
+</script>
+</body>
+</html>
