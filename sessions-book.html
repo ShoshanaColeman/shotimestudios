@@ -410,7 +410,7 @@ function send(payload,btn){
   .then(function(j){
     if(!j.success)throw new Error('fail');
     f.style.display='none';
-    p.innerHTML='<p><strong>Thank you!</strong> Your message is on its way. I&rsquo;ll reply as soon as I can.</p>';
+    p.innerHTML='<p><strong>Thank you!</strong> I will be in touch soon.</p>';
     p.style.display='block';p.scrollIntoView({behavior:'smooth',block:'nearest'});
   })
   .catch(function(){
