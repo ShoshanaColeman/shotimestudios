@@ -5,6 +5,38 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Page not found — Shoshana Coleman</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400&display=swap">
+<script>
+/* Old SmugMug-era addresses -> closest page on the new site */
+(function(){
+  var p=decodeURIComponent(location.pathname).toLowerCase();
+  var rules=[
+    [/about|bio|meet|mission|my-story|story/,'index.html#mission'],
+    [/contact|get-in-touch|reach/,'contact.html'],
+    [/book|inquir|enquir/,'sessions-book.html'],
+    [/portrait|headshot|family|couple|engagement/,'sessions-portraits.html'],
+    [/event|wedding|party/,'sessions-events.html'],
+    [/pet|dog|cat-?session/,'sessions-pets.html'],
+    [/brand|business|product/,'sessions-brands.html'],
+    [/concert|music|band|live/,'sessions-concerts.html'],
+    [/session|pricing|rates/,'sessions.html'],
+    [/video|film|reel/,'video.html'],
+    [/pantanal|jaguar/,'pantanal.html'],
+    [/far-north|queensland|fnq/,'far-north-queensland.html'],
+    [/south-?africa|sanccob/,'galleries-south-africa.html'],
+    [/botswana|ccb|cheetah/,'galleries-botswana.html'],
+    [/zimbabwe/,'galleries-zimbabwe.html'],
+    [/brazil/,'galleries-brazil.html'],
+    [/australia/,'galleries-australia.html'],
+    [/united-?states|usa|yellowstone|tetons?/,'galleries-united-states.html'],
+    [/landscape/,'galleries-landscapes.html'],
+    [/project/,'projects.html'],
+    [/galler|portfolio|wildlife|conservation|photo/,'galleries.html']
+  ];
+  for(var i=0;i<rules.length;i++){
+    if(rules[i][0].test(p)){location.replace('/'+rules[i][1]);return;}
+  }
+})();
+</script>
 <style>
 body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#15190f;color:#f4f4f2;font-family:'Montserrat','Helvetica Neue',Arial,sans-serif;font-weight:300;text-align:center;padding:24px}
 h1{font-weight:200;font-size:2rem;letter-spacing:.04em;margin:0 0 12px}
