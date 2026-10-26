@@ -259,3 +259,16 @@ p + p{margin-top:20px;}
 }
 @media (max-width:380px){.hero-copy h1{font-size:1.65rem;}}
 @media (prefers-reduced-motion:reduce){.loader-spinner,.scroll-cue{animation:none;}}
+
+/* Mobile: centre each home slideshow photo on its subject (phone screens crop the sides) */
+@media (max-width:700px){
+  .hero-slide img[src$="hero-01.jpg"]{object-position:55% 42%}
+  .hero-slide img[src$="hero-08.jpg"]{object-position:58% 42%}
+  .hero-slide img[src$="hero-02.jpg"]{object-position:27% 42%}
+  .hero-slide img[src$="hero-03.jpg"]{object-position:63% 42%}
+  .hero-slide img[src$="hero-04.jpg"]{object-position:84% 42%}
+  .hero-slide img[src$="hero-05.jpg"]{object-position:38% 42%}
+  .hero-slide img[src$="hero-06.jpg"]{object-position:24% 42%}
+  .hero-slide img[src$="hero-07.jpg"]{object-position:75% 42%}
+  .hero-media img[src$="zw-05.jpg"]{object-position:72% 42%}
+}
