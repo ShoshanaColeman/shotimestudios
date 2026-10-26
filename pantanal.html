@@ -1,10 +1,12 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Into The Pantanal</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;340;379;395;400;420;500;600;700&display=swap">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Archivo:wght@400;500;600&display=swap">
 <style>
   :root{
     --bg:#f4f4f2;
@@ -14,14 +16,16 @@
     --muted:#767066;
     --hairline:#e6e4de;
     --accent:#b9812f;
+    --serif:'Libre Baskerville',Georgia,serif;
+    --sans:'Archivo','Helvetica Neue',Arial,sans-serif;
   }
   *{box-sizing:border-box;}
   html{-webkit-text-size-adjust:100%;}
   body{
     background:var(--bg);
     color:var(--ink-soft);
-    font-family:'Montserrat','Helvetica Neue',Arial,sans-serif;
-    font-weight:300;
+    font-family:var(--sans);
+    font-weight:400;
     -webkit-font-smoothing:antialiased;
     padding-left:0;
     padding-right:0;
@@ -48,7 +52,7 @@
     border:2px solid rgba(255,255,255,.25);border-top-color:#fff;
     animation:spin .9s linear infinite;
   }
-  .loader-label{font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:300;opacity:.85;}
+  .loader-label{font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:400;opacity:.85;}
   @keyframes spin{to{transform:rotate(360deg);}}
 
   /* ---------- Shell ---------- */
@@ -56,72 +60,73 @@
   body{overflow-x:clip;}
   .section{position:relative;}
 
-  /* ---------- Hero ---------- */
-  .hero{
-    position:relative;
-    height:92vh;
-    height:92dvh;
-    min-height:540px;
-    max-height:880px;
-    background:#20241a;
-    overflow:hidden;
+  /* ---------- Hero (title sits outside/above the image) ---------- */
+  .hero-block{background:var(--surface);}
+  .hero-title{
+    max-width:1180px;
+    margin:0 auto;
+    padding:clamp(48px,9vw,104px) 24px clamp(28px,5vw,48px);
   }
-  .hero-media{position:absolute;inset:0;}
-  .hero-media img{
-    width:100%;height:100%;object-fit:cover;object-position:64% 42%;display:block;
+  .hero-title h1{
+    font-family:var(--serif);
+    font-weight:400;
+    font-size:clamp(2.5rem,7vw,4.8rem);
+    line-height:1.03;
+    letter-spacing:-.01em;
+    color:var(--ink);
+    text-wrap:balance;
   }
-  .hero-scrim{
-    position:absolute;inset:0;
-    background:
-      linear-gradient(0deg, rgba(0,0,0,.62) 0%, rgba(0,0,0,.08) 32%, rgba(0,0,0,.06) 55%, rgba(0,0,0,.42) 100%);
-  }
-  .hero-copy{
-    position:absolute;inset:0;z-index:2;
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    text-align:center;padding:0 24px;color:#fff;
-  }
-  .eyebrow{
-    font-size:.72rem;letter-spacing:.32em;text-transform:uppercase;
-    font-weight:400;opacity:.82;margin-bottom:18px;
-  }
-  .hero-copy h1{
-    font-size:clamp(2.5rem,7vw,4.4rem);
-    font-weight:395;
-    letter-spacing:.01em;
-    line-height:1.06;
-    text-shadow:0 3px 22px rgba(0,0,0,.4);
-  }
-  .byline{
-    margin-top:18px;
-    font-size:clamp(.82rem,2.2vw,1.05rem);
-    letter-spacing:.2em;
+  .hero-title .byline{
+    margin-top:20px;
+    font-family:var(--sans);
+    font-size:.8125rem;
+    letter-spacing:.14em;
     text-transform:uppercase;
-    font-weight:420;
-    text-shadow:0 1px 10px rgba(0,0,0,.4);
+    font-weight:500;
+    color:var(--muted);
   }
-  .scroll-cue{
-    position:absolute;bottom:30px;left:50%;
-    width:16px;height:16px;
-    border-right:2px solid rgba(255,255,255,.75);
-    border-bottom:2px solid rgba(255,255,255,.75);
-    transform:translateX(-50%) rotate(45deg);
-    animation:bob 1.8s ease-in-out infinite;
-  }
-  @keyframes bob{0%,100%{margin-top:0;opacity:.55;}50%{margin-top:8px;opacity:1;}}
+  .hero-figure{margin:0;}
+  .hero-figure img{width:100%;height:auto;display:block;}
 
   /* ---------- Prose ---------- */
   .prose{max-width:660px;margin:0 auto;padding:68px 24px;}
   .prose--tight{padding-top:52px;padding-bottom:52px;}
 
   h2{
+    font-family:var(--serif);
+    font-weight:400;
     font-size:clamp(1.9rem,4vw,2.7rem);
-    font-weight:300;
+    line-height:1.08;
+    letter-spacing:-.01em;
     color:var(--ink);
     margin:44px 0 18px;
     scroll-margin-top:20px;
   }
   h2:first-child{margin-top:0;}
   .text-center{text-align:center;}
+
+  /* Numbered section headings: a hairline "page break" above each new
+     part of the story, with a small running number beside the heading. */
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    gap:16px;
+    border-top:2px solid var(--ink);
+    padding-top:18px;
+    margin:44px 0 18px;
+    scroll-margin-top:20px;
+  }
+  .section-head:first-child{margin-top:0;}
+  .section-head h2{margin:0;}
+  .section-num{
+    font-family:var(--sans);
+    font-size:.8125rem;
+    font-weight:600;
+    letter-spacing:.1em;
+    color:var(--accent);
+    font-variant-numeric:tabular-nums;
+    white-space:nowrap;
+  }
 
   p{font-size:1.06rem;line-height:1.75;white-space:pre-line;}
   p + p{margin-top:20px;}
@@ -258,23 +263,34 @@
   }
   @media (max-width:600px){
     body{font-size:15px;}
-    .hero{height:88vh;height:88dvh;min-height:460px;}
-    .hero-copy h1{font-size:clamp(1.9rem,9vw,2.5rem);}
-    .byline{font-size:.78rem;letter-spacing:.16em;}
+    .hero-title{padding:36px 18px 26px;}
+    .hero-title h1{font-size:clamp(2rem,9vw,2.6rem);}
+    .hero-title .byline{font-size:.72rem;letter-spacing:.12em;}
     .prose{padding:38px 18px;max-width:100%;}
     .prose--tight{padding-top:30px;padding-bottom:30px;}
     h2{font-size:1.85rem;margin:32px 0 14px;}
+    .section-head{gap:10px;padding-top:14px;margin:32px 0 14px;}
+    .section-head h2{font-size:1.85rem;}
+    .section-num{font-size:.72rem;}
     p{font-size:1rem;line-height:1.68;}
     .split .prose{padding-top:28px;padding-bottom:28px;}
     .photo-grid img{margin-bottom:4px;}
   }
   @media (max-width:380px){
-    .hero-copy h1{font-size:1.65rem;}
+    .hero-title h1{font-size:1.7rem;}
   }
   @media (prefers-reduced-motion:reduce){
-    .loader-spinner,.scroll-cue{animation:none;}
+    .loader-spinner{animation:none;}
   }
+  .proj-back{display:inline-block;margin-bottom:26px;font-family:var(--sans);font-size:.78rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--muted);}
+  .proj-back:hover{color:var(--accent);}
+  .back-row{margin-bottom:14px;}
 </style>
+</head>
+<body>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Archivo:wght@400;500;600&display=swap">
 
 <div id="loader" class="loader">
   <div class="loader-inner">
@@ -285,25 +301,23 @@
 
 <main class="essay" id="top">
 
-  <header class="section hero">
-    <div class="hero-media">
-      <img src="images/pantanal/001-hero-dsc04549.jpg" alt="A jaguar resting on a tree branch through palm fronds in the Pantanal wetlands" fetchpriority="high">
-    </div>
-    <div class="hero-scrim"></div>
-    <a href="projects.html" style="position:absolute;top:20px;left:20px;z-index:5;color:#fff;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;text-shadow:0 1px 10px rgba(0,0,0,.7);border-bottom:1px solid rgba(255,255,255,.6);padding-bottom:2px">&larr; Projects</a>
-    <div class="hero-copy">
-      <h1>Into The<br>Pantanal</h1>
+  <header class="section hero-block">
+    <div class="hero-title">
+      <a class="proj-back" href="projects.html">&larr; Projects</a>
+      <h1>Into The Pantanal</h1>
       <p class="byline">Shoshana Coleman</p>
     </div>
-    <div class="scroll-cue" aria-hidden="true"></div>
+    <figure class="hero-figure">
+      <img src="images/pantanal/001-hero-dsc04549.jpg" alt="A jaguar resting on a tree branch through palm fronds in the Pantanal wetlands" fetchpriority="high">
+    </figure>
   </header>
 
   <section class="section">
     <div class="prose prose--tight">
       <h2 id="the-pantanal">The Pantanal</h2>
-      <p>Eleven days immersed in Brazil's vast Pantanal, an ancient wetland teeming with wildlife and home to the world's highest concentrations of jaguars. A glimpse into their world.</p>
-      <h2 id="the-hunt">The Hunt</h2>
-      <p>We had first spotted Medrosa creeping along the tree, looking for a jumping-off point to sink her teeth into the tough skin of a caiman lurking in the dark water below. After several minutes, we tried to contain our excitement as two cubs emerged from the forest and cautiously joined their mother. The bold one emerged first, eyes wide as they stepped out onto the jutting branch. Their mother hissed at them, seemingly annoyed that they had interrupted her delicate hunt. Soon, the shyer one appeared, tiptoeing out, as their sibling groomed her.</p>
+      <p>Eleven days immersed in Brazil's vast Pantanal, an ancient wetland teeming with wildlife and home to the world's highest concentration of jaguars. A glimpse into their world.</p>
+      <div class="section-head"><span class="section-num">01</span><h2 id="the-hunt">The Hunt</h2></div>
+      <p>We had first spotted Medrosa creeping along a tree, looking for a jumping-off point to sink her teeth into the tough skin of a caiman lurking in the dark water below. After several minutes, we tried to contain our excitement as her two cubs, Selva and Kiara, emerged from the forest and cautiously joined their mother. The bolder of the two emerged first, eyes wide as they stepped out onto the jutting branch. Medrosa hissed at them, seemingly annoyed that they had interrupted her delicate hunt. Soon, the shyer one appeared, tiptoeing out, as their sibling groomed them.</p>
     </div>
   </section>
 
@@ -320,17 +334,17 @@
       <img src="images/pantanal/005-dsc04245.jpg" alt="Jaguar Medrosa moving through the tree" loading="lazy">
     </div>
     <div class="prose">
-      <p>Eventually, Medrosa decided this tree wasn't a fit for her needs and moved on, her cubs following close behind as she tried a couple more. As their mother patiently waited for the perfect moment to pounce, the cubs seemed to get bored and climbed over her and each other and played with her tail.</p>
+      <p>Eventually, Medrosa decided this tree wasn't a fit for her needs and moved on, with Selva and Kiara following close behind as she tried a couple more. As their mother patiently waited for the perfect moment to pounce, the cubs seemed to get bored, climbing over her and each other and playing with her tail.</p>
     </div>
   </section>
 
   <section class="section">
     <div class="prose">
-      <p>Medrosa signaled for her cubs to stay put in the forest and picked her final tree. It stuck far out of the water, across a dense thicket of water hyacinth plants providing a perfect cover. We stayed for over an hour, waiting for any indication that she might pounce down onto a caiman.</p>
+      <p>Medrosa signaled for the cubs to stay put in the forest and picked her final tree. It stuck far out of the water, across a dense thicket of water hyacinth plants providing a perfect cover. We stayed for over an hour, waiting for any indication that she might pounce onto a caiman.</p>
       <figure class="inline-figure inline-figure--wide">
         <img src="images/pantanal/006-dsc04371.jpg" alt="Jaguar Medrosa camouflaged in the tree foliage, looking down before her leap" loading="lazy">
       </figure>
-      <p>Finally, it looked like she might be ready to move. To our surprise, instead of jumping into the water, she walked across the tree and into the thick leaf cover at the top, completely disappearing into the foliage. She was completely camouflaged. We held our cameras up for another twenty minutes or so but my 600mm lens was becoming much too heavy for me to hold up the entire time. I took breaks, though I kept my eyes locked on the large clump at the top of the tree. And then, the leap.</p>
+      <p>Finally, it looked like she might be ready to move. To our surprise, instead of jumping into the water, she walked across the tree and into the thick leaf cover at the top. She was completely camouflaged. We held our cameras up for another twenty minutes or so, but my 600mm lens was becoming much too heavy for me to hold up the entire time. I took breaks, though I kept my eyes locked on the large clump at the top of the tree. And then, the leap.</p>
     </div>
   </section>
 
@@ -340,8 +354,8 @@
 
   <section class="section">
     <div class="prose">
-      <p>The distinctive sound of the Medrosa's belly flop into the water brought us back to reality. I can't say I was prepared for her jump and I was sure I had missed it, but somehow, my fingers reacted faster than my brain could process what was happening. Although we couldn't see what was happening in the water due to the plants, the absence of any sounds of a struggle indicated to us that Medrosa was unsuccessful in nabbing a meal.</p>
-      <p>Our boat driver navigated us to the bank to see if we could get another glimpse of Medrosa when she exited the water. Just as someone in another boat had called out that "there was nothing else to see," we heard some commotion as Medrosa emerged from the water, and went under the bushes of the tree she had jumped out of. We heard a distinctive crunch and soon she walked toward us onto the bank where our boat was waiting, a huge caiman in her jaws.</p>
+      <p>The distinctive sound of Medrosa's belly flop into the water brought us back to reality. I can't say I was prepared for her jump, and I was sure I had missed it, but somehow, my fingers reacted faster than my brain could process what was happening. Although we couldn't see what was unfolding in the water due to the plants, the absence of any sounds of a struggle indicated to us that Medrosa was unsuccessful in nabbing a meal.</p>
+      <p>Our boat driver navigated us to the bank to see if we could get another glimpse of Medrosa when she exited the water. Just as someone in another boat had called out that "there was nothing else to see," we heard some commotion as Medrosa emerged from the water and went under the bushes of the tree she had jumped out of. We heard a distinctive crunch, and soon she walked toward us onto the bank where our boat was waiting, a huge caiman in her jaws.</p>
       <figure class="inline-figure">
         <img src="images/pantanal/008-dsc04388.jpg" alt="Jaguar Medrosa with a caiman catch" loading="lazy">
       </figure>
@@ -354,18 +368,18 @@
         <img src="images/pantanal/010-dsc04468.jpg" alt="Jaguar dragging a caiman into the forest" loading="lazy">
       </figure>
 
-      <h2 id="how-i-got-here">How I Got Here</h2>
-      <p>This trip was only possible because of Girls Who Click who gave me the opportunity to join Cat Expeditions in the Pantanal through a very generously donated trip.</p>
-      <p>The trip was led by Sebastian Kennerknecht, a wildlife and conservation photographer who has spent more than fifteen years documenting wild cats around the world with his work appearing in publications such as National Geographic and the New York Times. He co-founded Cat Expeditions with his wife, Rachel Tobias, and they were recently featured on CNN, discussing their journey as they approach reaching their goal of photographing every wild cat in the world.</p>
-      <p>I had followed Sebastian's work for many years starting from when I interned at the International League of Conservation Photographers, so the opportunity to learn from him in the field was something I was especially excited about. Rachel helped lead the expedition, took care of the group, and shot some video, and the two of them would both become an important part of my experience in the Pantanal.</p>
+      <div class="section-head"><span class="section-num">02</span><h2 id="how-i-got-here">How I Got Here</h2></div>
+      <p>This trip was only possible because of Girls Who Click, who gave me the opportunity to join Cat Expeditions in the Pantanal through a very generously donated trip.</p>
+      <p>The trip was led by Sebastian Kennerknecht, a wildlife and conservation photographer who has spent more than fifteen years documenting wild cats around the world with his work appearing in publications such as National Geographic and the New York Times. He co-founded Cat Expeditions with his wife, Rachel Tobias, and they were recently featured on CNN, discussing their journey as they work toward their goal of photographing every wild cat in the world.</p>
+      <p>I had followed Sebastian's work for years, since interning at the International League of Conservation Photographers. The opportunity to learn from him in the field was something I was particularly eager to experience. Rachel helped lead the expedition, took care of the group, and shot some video. The two of them would become an important part of my experience in the Pantanal.</p>
       <p>I didn't expect to be selected. When I found out I had won, I was incredibly excited, but I also had a lot of self-doubt. I felt guilty that I had been chosen over other people who had also wanted to be there, and I wondered whether I really deserved the opportunity.</p>
-      <p>At our first group dinner, everyone was incredibly welcoming. I loved being surrounded by people who cared so deeply about wildlife and were just as excited to see it as I was. I learned that many of the jaguars we would be looking for were known individuals that people had been seeing year after year, each with their own names.</p>
+      <p>At our first group dinner, everyone was genuinely welcoming. I loved being surrounded by people who cared so deeply about wildlife and were just as captivated by it as I was. I learned that many of the jaguars we would be looking for were known individuals that people had been seeing year after year, each with their own names.</p>
       <p>Between the welcome card and Cat Expeditions buffs waiting for us, the trip was finally starting to feel real.</p>
 
-      <h2 id="living-with-jaguars">Living With Jaguars</h2>
-      <p>In addition to the jaguars themselves, I was also very excited to see the coexistence work happening in the Pantanal. Because the vast majority of the Pantanal is composed of privately owned land, including large cattle ranches, jaguars have to survive alongside livestock and people. Unfortunately, it was common for ranchers to shoot any jaguars that were predating on livestock or simply perceived as a problem. However, ecotourism is starting to change the relationship between people and jaguars. The Pantanal has become an ecotourism destination to see jaguars and other wildlife up close. Some ranchers have converted parts of their property into lodges and started employing locals as boat drivers and guides. Locals realized these jaguars can bring in value rather than taking it away, and landowners are able to tolerate some losses to jaguars.</p>
-      <p>Importantly, studies by organisations such as the Jaguar ID Project have shown that this method of ecotourism doesn't seem to have a negative effect on the wildlife as long as distance and noise levels are kept down.</p>
-      <h2 id="entering-the-pantanal">Entering the Pantanal</h2>
+      <div class="section-head"><span class="section-num">03</span><h2 id="living-with-jaguars">Living With Jaguars</h2></div>
+      <p>In addition to the jaguars themselves, I was fascinated by the coexistence work happening in the Pantanal. Because the vast majority of the Pantanal is composed of privately owned land, including large cattle ranches, jaguars have to survive alongside livestock and people. Unfortunately, it was common for ranchers to shoot any jaguars that were predating on livestock or simply perceived as a problem. However, ecotourism is starting to change the relationship between people and jaguars. The Pantanal has become an ecotourism destination to see jaguars and other wildlife up close. Some ranchers have converted parts of their property into lodges and started employing locals as boat drivers and guides. Locals realized these jaguars can bring in value rather than taking it away, and landowners are able to tolerate the occasional livestock loss.</p>
+      <p>Importantly, some studies by organizations such as the Jaguar ID Project have shown that this method of ecotourism doesn't seem to have a negative effect on the wildlife as long as distance and noise levels are kept down.</p>
+      <div class="section-head"><span class="section-num">04</span><h2 id="entering-the-pantanal">Entering The Pantanal</h2></div>
     </div>
   </section>
 
@@ -385,23 +399,23 @@
 
   <section class="section">
     <div class="prose">
-      <h2 id="coalition">Coalition</h2>
-      <p>Another key moment was seeing a male coalition. Jaguars are generally considered solitary animals, so seeing two males traveling together was especially exciting. We arrived just in time to see the pair, an uncle and nephew, crossing the river together. They kept a fair distance from each other which made getting photos of the two together unfeasible with the long lens I had on. As they crossed, the cat in the front turned back to make sure his companion was still following. There was a close call when a young boat driver didn't realize there were two cats instead of one. After the first cat crossed in front of his boat, he was only paying attention to that one and almost bumped right into the second. The other boat drivers on the river immediately started yelling at him to get out of the way. The incident was a reminder that although there may be a need for stronger regulations, there is also a tight community looking out for the environment. As the uncle and nephew reached the opposite shore, I was able to snap a quick photo of the cats before they disappeared into the vegetation. It wasn't the photograph I had hoped for, but it was enough to keep as a memory of the encounter.</p>
+      <div class="section-head"><span class="section-num">05</span><h2 id="coalition">Coalition</h2></div>
+      <p>Another key moment was seeing a male coalition. Jaguars are generally considered solitary animals, so seeing two males traveling together was particularly intriguing. We arrived just in time to see the pair, an uncle and nephew, crossing the river together. They kept a fair distance from each other, which made getting photos of the two together unfeasible with the long lens I had on. As they crossed, the cat in the front turned back to make sure his companion was still following. There was a close call when a young boat driver didn't realize there were two cats instead of one. After the first cat crossed in front of his boat, he was only paying attention to that one and almost bumped right into the second. The other boat drivers on the river immediately started yelling at him to get out of the way. The incident was a reminder that although there may be a need for stronger regulations, there is also a tight community looking out for the environment. As the uncle and nephew reached the opposite shore, I was able to snap a quick photo of the cats before they disappeared into the vegetation. It wasn't the photograph I had hoped for, but it was enough to keep as a memory of the encounter.</p>
       <figure class="inline-figure inline-figure--wide">
         <img src="images/pantanal/012-dsc01265.jpg" alt="Two jaguars, an uncle and nephew, crossing the river together" loading="lazy">
       </figure>
 
-      <h2 id="a-long-nap">A Long Nap</h2>
-      <p>Another memorable moment we had was watching a jaguar take a long nap. We were one of the first boats on the scene and watched her nap for a very long time as boats came and went. People were clearly waiting for something to happen, and grew frustrated when all she did was nap, occasionally readjusting or going after a pesky fly. Since the cat was sleeping, it was also a good opportunity for me to experiment with composition. Sebastian talked me through a few different ways I could approach the scene and had me try out different compositions. It was a chance to slow down and think about the photograph rather than waiting for something to happen. Some people began talking loudly, and worst of all, started making noises specifically at the cat to try to get a reaction. Sebastian very respectfully asked a couple groups to stop, pulling out his French and German skills. He had to do this a few times and got some snarky responses about how the cat had already been there for several hours. Luckily, this cat seemed used to people.</p>
+      <div class="section-head"><span class="section-num">06</span><h2 id="a-long-nap">A Long Nap</h2></div>
+      <p>Another memorable moment we had was watching a jaguar take a long nap. We were one of the first boats on the scene and watched her nap for a very long time as boats came and went. People were clearly waiting for something to happen, and grew frustrated when all she did was nap, occasionally readjusting or going after a pesky fly. Since the cat was sleeping, it was a good opportunity for me to experiment with composition. Sebastian talked me through several ways I could approach the scene and had me experiment with different compositions. It was a chance to slow down and think about the photograph rather than waiting for something to happen. Some people began talking loudly, and worst of all, started making noises specifically at the cat to try to get a reaction. Sebastian very respectfully asked a couple of groups to stop, pulling out his French and German skills. He had to do this a few times and got some snarky responses about how the cat had already been there for several hours. Luckily, this cat seemed used to people.</p>
       <figure class="inline-figure inline-figure--wide">
         <img src="images/pantanal/013-dsc03592.jpg" alt="A jaguar napping on a tree branch" loading="lazy">
       </figure>
       <p>For me, this sighting was a reminder that sometimes the best wildlife encounters are the ones where nothing happens at all.</p>
-      <p>That night at dinner, we talked about how great it was to be on a tour that was so committed to ethical wildlife viewing. Everyone also shared the different things they accomplished in their careers and in their lives. It was really interesting hearing about the different paths everyone had taken. The conversation eventually turned to where I was in my conservation photography journey. I talked about where I was hoping to go and some of the uncertainty that came with trying to build a career in photography. But as we talked, Sebastian and Rachel told me that they had seen potential in me through my application. The rest of the group began offering connections and advice that they thought could help me moving forward. It was a small moment, but it meant a lot to me.</p>
+      <p>That night at dinner, we talked about how great it was to be on a tour that was so committed to ethical wildlife viewing. Everyone also shared the experiences and accomplishments that had shaped their careers and lives. I loved hearing about the unique paths that had brought each person to this point. The conversation eventually turned to where I was in my conservation photography journey. I talked about where I was hoping to go and some of the uncertainty that came with trying to build a career in photography. But as we talked, Sebastian and Rachel told me that they had seen potential in me through my application. The rest of the group began offering connections and advice that they thought could help me moving forward. It was a small moment, but it meant a lot to me.</p>
 
-      <h2 id="social-dynamics">Social Dynamics</h2>
-      <p>After six days exploring the river systems of the Northern Pantanal, we hopped on a bush plane and flew down to the Southern Pantanal. This was a completely different landscape and allowed us to see a different side of the ecosystem. Instead of navigating the area by boat, we were able to use well-equipped jeeps and were guided by another Girls Who Click Ambassador, Carol Prange, as well as another guide, Raphael.</p>
-      <p>Our group's extraordinary luck continued as we arrived right on scene to a dramatic display of the complex social dynamic of jaguars. Two jaguars had been together mating for several days while another female stayed close by to make sure the male did not come near her vulnerable cub. We were greeted with a picturesque scene of the female jaguar resting on a tree with the male hidden among the leaves below.</p>
+      <div class="section-head"><span class="section-num">07</span><h2 id="social-dynamics">Social Dynamics</h2></div>
+      <p>After six days exploring the river systems of the Northern Pantanal, we hopped on a bush plane and flew down to the Southern Pantanal. The landscape was distinctly different from the river environment we had grown accustomed to, giving us the opportunity to experience another side of the ecosystem. Instead of navigating the area by boat, we were able to use well-equipped jeeps and were guided by another Girls Who Click Ambassador, Carol Prange, as well as another guide, Raphael.</p>
+      <p>Our group's extraordinary luck continued as we arrived right on scene to a dramatic display of the complex social dynamic of jaguars. Two jaguars had been mating for several days while another female stayed close by to make sure the male did not come near her vulnerable cub. We were greeted with a picturesque scene of the female jaguar resting on a tree with the male hidden among the leaves below.</p>
     </div>
   </section>
 
@@ -415,7 +429,7 @@
       <figure class="inline-figure inline-figure--small">
         <img src="images/pantanal/015-dsc04716.jpg" alt="Jaguars together at dusk" loading="lazy">
       </figure>
-      <p>The next day, we heard the pair mate several more times, and were later able to see Surya, the jaguar that stayed close to the mating pair. She had some injuries from a fight with the male and was limping slightly. We were lucky enough to see her adorable cub who was only about six months old.</p>
+      <p>The next day, we heard the pair mate several more times, and were later able to see Surya, the jaguar that stayed close to the mating pair. She had some injuries from a fight with the male and was limping slightly. We were fortunate enough to see her adorable cub who was only about six months old.</p>
     </div>
   </section>
 
@@ -431,8 +445,8 @@
 
   <section class="section">
     <div class="prose">
-      <h2 id="the-fishing-ocelot">The Fishing Ocelot</h2>
-      <p>Upon our arrival at the Southern Pantanal, the guides had mentioned that they had often seen an ocelot fishing under a particular bridge. We tried many different strategies over several nights to see this behaviour. We noticed that the ocelots seemed to get scared of the lights, so we only used them very briefly. We saw an ocelot cub as well, and even on the days when we didn't get photos, it was still quite special to see these elusive cats up close. It wasn't until the last day that we finally saw an ocelot actually attempt to fish. Because we noticed the ocelots were so sensitive to the lights, we avoided using our external lights while the ocelot was attempting to hunt, and instead Sebastian was able to capture a video of the action using an infrared camera.</p>
+      <div class="section-head"><span class="section-num">08</span><h2 id="the-fishing-ocelot">The Fishing Ocelot</h2></div>
+      <p>Upon our arrival at the Southern Pantanal, the guides had mentioned that they had often seen an ocelot fishing under a particular bridge. We tried many different strategies over several nights to see this behavior. We noticed that the ocelots seemed to get scared of the lights, so we only used them very briefly. We saw an ocelot cub as well, and even on the days when we didn't get photos, it was still quite special to see these elusive cats up close. It wasn't until the last day that we finally saw an ocelot actually attempt to fish. We avoided using our external lights while the ocelot was attempting to hunt, and instead Sebastian was able to capture a video of the action using an infrared camera.</p>
     </div>
   </section>
 
@@ -446,7 +460,7 @@
 
   <section class="section">
     <div class="prose">
-      <h2 id="what-i-took-home">What I Took Home</h2>
+      <div class="section-head"><span class="section-num">09</span><h2 id="what-i-took-home">What I Took Home</h2></div>
       <p>When I found out I had won this trip, I wasn't sure I deserved it.</p>
       <p>After spending eleven days in the Pantanal, I started to feel differently.</p>
       <p>I came home with thousands of photographs, new skills, and a much clearer idea of the kind of photographer I want to be. But more than anything, I came home with a little more confidence in myself and in the work I'm capable of doing. I had spent so much time surrounded by people who saw potential in me that eventually, I began to see it too.</p>
@@ -463,7 +477,7 @@
 
   <section class="section">
     <div class="prose prose--tight">
-      <h2 id="a-few-more-moments-from-the-pantanal">A Few More Moments From The Pantanal</h2>
+      <div class="section-head"><h2 id="a-few-more-moments-from-the-pantanal">A Few More Moments From The Pantanal</h2></div>
     </div>
   </section>
 
@@ -499,12 +513,11 @@
       <span aria-hidden="true">&middot;</span>
       <a href="https://www.shotimestudios.com" target="_blank" rel="noopener">shotimestudios.com</a>
     </p>
-    <a href="#top" class="back-to-top">Back to top ↑</a><br>
-    <a href="projects.html" class="back-to-top">← Back to Projects</a>
+    <p class="back-row"><a href="projects.html" class="back-to-top">← Back to Projects</a></p>
+    <a href="#top" class="back-to-top">Back to top ↑</a>
   </footer>
 
 </main>
-
 <script>
   window.addEventListener('load', function () {
     var loader = document.getElementById('loader');
@@ -578,4 +591,5 @@
     });
   })();
 </script>
+</body>
 </html>
