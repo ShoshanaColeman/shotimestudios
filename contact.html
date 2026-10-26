@@ -351,14 +351,12 @@ p + p{margin-top:20px;}
         </select>
         <label for="cf-msg">Message</label>
         <textarea id="cf-msg" name="message" required></textarea>
+        <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
         <button class="send" type="submit">Send message</button>
         <p class="cnote" id="cf-err" style="color:#9a3b2a;display:none"></p>
-        <p class="cnote">Sending opens your email app with this message ready to go to shoshana@shotimestudios.com.</p>
+        
       </form>
       <div class="cresult" id="cf-result" role="status">
-        <p>Your email app should open with your message ready to send. If nothing opens, copy the text below and email it to <a class="back-to-top" style="margin-top:0" href="mailto:shoshana@shotimestudios.com">shoshana@shotimestudios.com</a>.</p>
-        <textarea id="cf-copy-text" readonly></textarea>
-        <button type="button" class="contact-copy" id="cf-copy-btn">Copy message</button>
       </div>
     </div>
   </section>
@@ -435,37 +433,32 @@ document.addEventListener('DOMContentLoaded', function () {
 <script>
 (function(){
 var TO='shoshana@shotimestudios.com';
-function copy(text,btn,label){
-  var done=function(){var o=btn.textContent;btn.textContent='Copied';setTimeout(function(){btn.textContent=label||o;},1800);};
-  try{
-    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done,function(){fallback()});return;}
-  }catch(e){}
-  fallback();
-  function fallback(){
-    var t=document.createElement('textarea');t.value=text;t.setAttribute('readonly','');t.style.position='fixed';t.style.opacity='0';document.body.appendChild(t);t.select();
-    try{document.execCommand('copy');done();}catch(e){btn.textContent='Press Ctrl/Cmd+C';}
-    document.body.removeChild(t);
-  }
-}
 var f=document.getElementById('cf'),err=document.getElementById('cf-err'),res=document.getElementById('cf-result'),ct=document.getElementById('cf-copy-text');
+
+var KEY="f956f83e-e9bb-4959-bc3e-19e0c278327f";
+function send(payload,btn){
+  var orig=btn.textContent;btn.disabled=true;btn.textContent='Sending\u2026';
+  var p=document.getElementById('cf-result');
+  fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(payload)})
+  .then(function(r){return r.json();})
+  .then(function(j){
+    if(!j.success)throw new Error('fail');
+    f.style.display='none';
+    p.innerHTML='<p><strong>Thank you!</strong> Your message is on its way. I&rsquo;ll reply as soon as I can.</p>';
+    p.style.display='block';p.scrollIntoView({behavior:'smooth',block:'nearest'});
+  })
+  .catch(function(){
+    btn.disabled=false;btn.textContent=orig;
+    err.textContent='Sorry, that didn\u2019t send. Please try again, or email shoshana@shotimestudios.com directly.';err.style.display='block';
+  });
+}
 f.addEventListener('submit',function(e){
   e.preventDefault();
   var n=f.name.value.trim(),em=f.email.value.trim(),t=f.topic.value,m=f.message.value.trim();
   err.style.display='none';
-  if(!n||!m||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){
-    err.textContent='Please add your name, a valid email address and a message.';err.style.display='block';return;
-  }
-  var subject=t+' \u2014 '+n;
-  var body=m+'\n\n'+n+'\n'+em;
-  ct.value='To: '+TO+'\nSubject: '+subject+'\n\n'+body;
-  res.style.display='block';
-  var a=document.createElement('a');
-  a.href='mailto:'+TO+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
-  a.target='_blank';a.rel='noopener';a.style.display='none';
-  document.body.appendChild(a);a.click();document.body.removeChild(a);
-  res.scrollIntoView({behavior:'smooth',block:'nearest'});
+  if(!n||!m||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){err.textContent='Please add your name, a valid email address and a message.';err.style.display='block';return;}
+  send({access_key:KEY,subject:t+' \u2014 '+n,from_name:'Sho Time Studios website',name:n,email:em,topic:t,message:m,botcheck:f.botcheck.checked},f.querySelector('.send'));
 });
-document.getElementById('cf-copy-btn').addEventListener('click',function(){copy(ct.value,this,'Copy message');});
 })();
 </script>
 <script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest('a[href="#top"]');if(!a)return;e.preventDefault();window.scrollTo({top:0,behavior:"smooth"});});</script>
