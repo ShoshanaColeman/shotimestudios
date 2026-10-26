@@ -87,7 +87,10 @@
   .vclose { position: absolute; top: max(.75rem, env(safe-area-inset-top)); right: max(.75rem, env(safe-area-inset-right));
             background: rgba(0, 21, 14, .9); }
 
+  .backbtn { display: none; }
   @media (max-width: 720px) {
+    .backbtn { display: inline; white-space: nowrap; }
+    .nav li:first-child { display: none; }
     :root { --bar-h: 5.25rem; }
     .bar { grid-template-columns: minmax(0, 1fr) auto; gap: 0 1rem; }
     .nav { grid-column: 1 / -1; order: 3; margin-inline: -1rem; padding-inline: 1rem; }
@@ -112,6 +115,7 @@
     </ul>
   </nav>
   <div class="meta">
+    <a class="backbtn" href="projects.html">&larr; Projects</a>
     <span class="count" id="count" aria-hidden="true">1 / 56</span>
   </div>
 </header>
