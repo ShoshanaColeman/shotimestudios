@@ -473,5 +473,6 @@ lb.addEventListener('touchend',function(e){if(tx===null)return;var d=e.changedTo
 })();
 </script>
 
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest('a[href="#top"]');if(!a)return;e.preventDefault();window.scrollTo({top:0,behavior:"smooth"});});</script>
 </body>
 </html>
